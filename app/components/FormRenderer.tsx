@@ -9,11 +9,11 @@ interface Field {
 }
 
 // Define the shape of the props your component will receive
-interface FormComponentProps {
+interface FormRendererProps {
   groupedFields: Record<string, Field[]>;
 }
 
-export function FormComponent({ groupedFields }: FormComponentProps) {
+export function FormRenderer({ groupedFields }: FormRendererProps) {
   return (
     // mb to make sure form isnt hidden by sticky footer
     <div className="mb-60">

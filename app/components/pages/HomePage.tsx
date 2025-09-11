@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { FormsList } from "~/components/forms_list";
+import { FormsList } from "~/components/FormsList";
 
 export function HomePage() {
   return (

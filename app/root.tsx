@@ -8,7 +8,7 @@ import {
 } from "react-router";
 import { useLocation } from "react-router";
 import type { Route } from "./+types/root";
-import { Header } from "./components/layout/header";
+import { Header } from "./components/layout/Header";
 import "./app.css";
 
 export const links: Route.LinksFunction = () => [

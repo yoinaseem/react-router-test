@@ -1,4 +1,4 @@
-import { FormPage } from "~/components/pages/form_page";
+import { FormPage } from "~/components/pages/FormPage";
 import type { Route } from "./+types/home";
 import type { LoaderFunctionArgs } from "react-router";
 import { useLoaderData } from "react-router";

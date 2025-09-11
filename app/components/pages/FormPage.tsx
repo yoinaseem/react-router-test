@@ -1,6 +1,6 @@
 import { useMemo } from "react";
-import { Footer } from "~/components/layout/footer";
-import { FormComponent } from "~/components/dyn_form";
+import { Footer } from "~/components/layout/Footer";
+import { FormRenderer } from "~/components/FormRenderer";
 
 // Define the types for your data here so this component knows what to expect
 // You can export these from your route file if you prefer
@@ -41,7 +41,7 @@ export function FormPage({ formData }: FormPageProps) {
       </section>
       <section>
         <div className="container mx-auto w-5xl mt-12">
-          <FormComponent groupedFields={groupedFields} />
+          <FormRenderer groupedFields={groupedFields} />
         </div>
       </section>
       <Footer />
