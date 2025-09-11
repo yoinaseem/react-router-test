@@ -1,15 +1,22 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif,
+  --font-sans: "Roboto", ui-sans-serif, system-ui, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --color-custom-gray: #9c9c9c;
+  --color-custom-gray-light: #F9F9F9;
+  --color-custom-gray-dark: #D2D2D2;
+  --color-custom-blue: #007AD2;
+  --color-custom-navy: #003962;
+  --color-custom-green: #23B520;
+
 }
 
 html,
 body {
-  @apply bg-white dark:bg-gray-950;
-
-  @media (prefers-color-scheme: dark) {
+  /* @apply bg-white; */
+  font-family: var(--font-sans);
+  /* @media (prefers-color-scheme: dark) {
     color-scheme: dark;
-  }
+  } */
 }
