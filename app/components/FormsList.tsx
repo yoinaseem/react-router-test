@@ -9,7 +9,7 @@ export function FormsList() {
         {forms.map((form) => (
           <div
             key={form.slug}
-            className="flex gap-3 text-custom-blue font-semibold"
+            className="flex gap-3 text-custom-blue-light font-semibold"
           >
             <FileText size={22} />
             <Link to={`/form/${form.slug}`}>{form.name}</Link>

@@ -15,7 +15,7 @@ const getFormData = (slug: string | undefined) => {
           default: undefined,
           required: true,
           section: "General Information",
-          col_span: 'col-span-2',
+          className: 'col-span-6',
         },
         {
           name: "Club Name",
@@ -24,7 +24,7 @@ const getFormData = (slug: string | undefined) => {
           default: undefined,
           required: true,
           section: "General Information",
-          col_span: 'col-span-2',
+          className: 'col-span-6',
         },
         {
           name: "Position in Club",
@@ -33,7 +33,7 @@ const getFormData = (slug: string | undefined) => {
           default: undefined,
           required: true,
           section: "General Information",
-          col_span: 'col-span-2',
+          className: 'col-span-6',
         },
         {
           name: "Sport",
@@ -42,7 +42,7 @@ const getFormData = (slug: string | undefined) => {
           default: undefined,
           required: true,
           section: "General Information",
-          col_span: 'col-span-2',
+          className: 'col-span-6',
         },
         {
           name: "Street Address",
@@ -51,7 +51,7 @@ const getFormData = (slug: string | undefined) => {
           default: undefined,
           required: true,
           section: "General Information",
-          col_span: 'col-span-2',
+          className: 'col-span-6',
         },
         {
           name: "Island City",
@@ -60,7 +60,7 @@ const getFormData = (slug: string | undefined) => {
           default: undefined,
           required: true,
           section: "General Information",
-          col_span: 'col-span-2',
+          className: 'col-span-6',
         },
         {
           name: "Contact Number",
@@ -69,7 +69,7 @@ const getFormData = (slug: string | undefined) => {
           default: undefined,
           required: true,
           section: "General Information",
-          col_span: 'col-span-2',
+          className: 'col-span-2',
         },
         {
           name: "Email",
@@ -78,7 +78,7 @@ const getFormData = (slug: string | undefined) => {
           default: undefined,
           required: true,
           section: "General Information",
-          col_span: 'col-span-2',
+          className: 'col-span-4',
         },
         {
           name: "Website",
@@ -87,7 +87,7 @@ const getFormData = (slug: string | undefined) => {
           default: undefined,
           required: true,
           section: "General Information",
-          col_span: 'col-span-2',
+          className: 'col-span-6',
         },
       ],
     };
@@ -103,7 +103,7 @@ const getFormData = (slug: string | undefined) => {
           default: undefined,
           required: true,
           section: "General Information",
-          col_span: 'col-span-2',
+
         },
         {
           name: "Club Name",
@@ -112,7 +112,7 @@ const getFormData = (slug: string | undefined) => {
           default: undefined,
           required: true,
           section: "General Information",
-          col_span: 'col-span-2',
+
         },
         {
           name: "Position in Club",
@@ -121,7 +121,7 @@ const getFormData = (slug: string | undefined) => {
           default: undefined,
           required: true,
           section: "General Information",
-          col_span: 'col-span-2',
+
         },
         {
           name: "Sport",
@@ -130,7 +130,7 @@ const getFormData = (slug: string | undefined) => {
           default: undefined,
           required: true,
           section: "General Information",
-          col_span: 'col-span-2',
+
         },
         {
           name: "Street Address",
@@ -139,7 +139,7 @@ const getFormData = (slug: string | undefined) => {
           default: undefined,
           required: true,
           section: "General Information",
-          col_span: 'col-span-2',
+
         },
       ],
     };  
