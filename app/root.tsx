@@ -10,6 +10,7 @@ import { useLocation } from "react-router";
 import type { Route } from "./+types/root";
 import { Header } from "./components/layout/Header";
 import "./app.css";
+import { AuthProvider } from "./contexts/AuthContext";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -35,8 +36,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body className={location.pathname === '/login' ? 'bg-custom-gray-light' : ''}>
+        <AuthProvider>
         <Header/>
         {children}
+        </AuthProvider>
         <ScrollRestoration />
         <Scripts />
       </body>

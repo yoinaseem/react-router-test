@@ -103,7 +103,6 @@ const getFormData = (slug: string | undefined) => {
           default: undefined,
           required: true,
           section: "General Information",
-
         },
         {
           name: "Club Name",
@@ -112,7 +111,6 @@ const getFormData = (slug: string | undefined) => {
           default: undefined,
           required: true,
           section: "General Information",
-
         },
         {
           name: "Position in Club",
@@ -121,7 +119,6 @@ const getFormData = (slug: string | undefined) => {
           default: undefined,
           required: true,
           section: "General Information",
-
         },
         {
           name: "Sport",
@@ -130,7 +127,6 @@ const getFormData = (slug: string | undefined) => {
           default: undefined,
           required: true,
           section: "General Information",
-
         },
         {
           name: "Street Address",
@@ -139,7 +135,22 @@ const getFormData = (slug: string | undefined) => {
           default: undefined,
           required: true,
           section: "General Information",
-
+        },
+        {
+          name: "Tournament Title",
+          placeholder: "Tournament Title",
+          type: "text-input",
+          default: undefined,
+          required: true,
+          section: "Tournament Information",
+        },
+        {
+          name: "Sport",
+          placeholder: "Select Sport",
+          type: "select-input",
+          default: undefined,
+          required: true,
+          section: "Tournament Information",
         },
       ],
     };  
@@ -154,7 +165,6 @@ export async function loader({ params }: LoaderFunctionArgs) {
   if (!formData) {
     throw new Response("Not Found", { status: 404 });
   }
-  // The returned data is provided to the component via useLoaderData
   return { formData };
 }
 
