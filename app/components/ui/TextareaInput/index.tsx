@@ -8,29 +8,24 @@ interface Props {
   placeholder: string;
   required: boolean;
   className?: string;
-  min?: number;
-  max?: number;
-  step?: number;
-  value: string | number;
-  onChange: (name: string, value: number) => void;
+  rows?: number;
+  value: string;
+  onChange: (name: string, value: string) => void;
 }
 
-export function NumberInput({
+export function TextareaInput({
   id,
   name,
   label,
   placeholder,
   required,
   className,
-  min,
-  max,
-  step,
+  rows = 4,
   value,
   onChange,
 }: Props) {
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const numValue = e.target.value ? Number(e.target.value) : "";
-    onChange(name, numValue);
+  const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    onChange(name, e.target.value);
   };
 
   return (
@@ -39,17 +34,14 @@ export function NumberInput({
         {label}
         {required && <span className="text-red-500 ml-1">*</span>}
       </label>
-      <input
-        type="number"
+      <textarea
         id={id}
         name={name}
         value={value}
         onChange={handleChange}
         placeholder={placeholder}
         required={required}
-        min={min}
-        max={max}
-        step={step}
+        rows={rows}
         className="border border-custom-gray rounded-md p-2"
       />
     </div>

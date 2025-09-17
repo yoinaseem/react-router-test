@@ -1,5 +1,3 @@
-// src/components/Header.jsx
-
 import mvEmblem from "../../assets/mv-emblem.svg";
 import { Link } from "react-router";
 import { useAuth } from "~/contexts/AuthContext";

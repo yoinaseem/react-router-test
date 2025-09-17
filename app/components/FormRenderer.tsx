@@ -1,5 +1,5 @@
 import { TextInput } from "./ui/TextInput";
-import { TextareaInput } from "./ui/TextareaInput.tsx";
+import { TextareaInput } from "./ui/TextareaInput";
 import { NumberInput } from "./ui/NumberInput";
 import { SelectInput } from "./ui/SelectInput";
 import { EmailInput } from "./ui/EmailInput";
@@ -13,11 +13,16 @@ const toKebabCase = (str: string) => str.toLowerCase().replace(/\s+/g, "-");
 
 interface FormRendererProps {
   sections: FormSection[];
+  onInputChange: (name: string, value: any) => void;
+  formState: Record<string, any>;
 }
 
-export function FormRenderer({ sections }: FormRendererProps) {
+export function FormRenderer({
+  sections,
+  onInputChange,
+  formState,
+}: FormRendererProps) {
   return (
-    // mb to make sure form isnt hidden by sticky footer
     <div className="mb-60">
       <form className="flex flex-col gap-8">
         {sections.map((section) => (
@@ -27,6 +32,7 @@ export function FormRenderer({ sections }: FormRendererProps) {
             <div className="grid grid-cols-12 gap-8">
               {section.fields.map((field) => {
                 const fieldId = toKebabCase(field.name);
+                const value = formState[field.name] || "";
 
                 if (field.type === "text") {
                   return (
@@ -37,8 +43,9 @@ export function FormRenderer({ sections }: FormRendererProps) {
                       label={field.label}
                       placeholder={field.placeholder || ""}
                       required={field.is_required}
-                      // Your API provides 'class_name' (snake_case)
                       className={field.class_name}
+                      value={value}
+                      onChange={onInputChange}
                     />
                   );
                 }
@@ -52,8 +59,8 @@ export function FormRenderer({ sections }: FormRendererProps) {
                       placeholder={field.placeholder || ""}
                       required={field.is_required}
                       className={field.class_name}
-                      // You could even pass the number of rows from your API if needed
-                      // rows={field.rows}
+                      value={value}
+                      onChange={onInputChange}
                     />
                   );
                 }
@@ -67,10 +74,8 @@ export function FormRenderer({ sections }: FormRendererProps) {
                       placeholder={field.placeholder || ""}
                       required={field.is_required}
                       className={field.class_name}
-                      // You can pass min/max values from your API if available
-                      // For example:
-                      // min={field.validation_rules?.min}
-                      // max={field.validation_rules?.max}
+                      value={value}
+                      onChange={onInputChange}
                     />
                   );
                 }
@@ -84,6 +89,8 @@ export function FormRenderer({ sections }: FormRendererProps) {
                       placeholder={field.placeholder || ""}
                       required={field.is_required}
                       className={field.class_name}
+                      value={value}
+                      onChange={onInputChange}
                     />
                   );
                 }
@@ -98,6 +105,8 @@ export function FormRenderer({ sections }: FormRendererProps) {
                       placeholder={field.placeholder || ""}
                       required={field.is_required}
                       className={field.class_name}
+                      value={value}
+                      onChange={onInputChange}
                     />
                   );
                 }
@@ -112,15 +121,16 @@ export function FormRenderer({ sections }: FormRendererProps) {
                       placeholder={field.placeholder || ""}
                       required={field.is_required}
                       className={field.class_name}
+                      value={value}
+                      onChange={onInputChange}
                     />
                   );
                 }
 
                 if (field.type === "select") {
-                  console.log("Select");
                   const transformedOptions = (field.options || []).map(
                     (opt) => ({
-                      value: opt, // Use the string for both value and label
+                      value: opt,
                       label: opt,
                     })
                   );
@@ -134,6 +144,8 @@ export function FormRenderer({ sections }: FormRendererProps) {
                       options={transformedOptions}
                       required={field.is_required}
                       className={field.class_name}
+                      value={value}
+                      onChange={onInputChange}
                     />
                   );
                 }
@@ -154,6 +166,8 @@ export function FormRenderer({ sections }: FormRendererProps) {
                       options={transformedOptions}
                       required={field.is_required}
                       className={field.class_name}
+                      value={value}
+                      onChange={onInputChange}
                     />
                   );
                 }
@@ -172,11 +186,13 @@ export function FormRenderer({ sections }: FormRendererProps) {
                       name={field.name}
                       label={field.label}
                       options={transformedOptions}
+                      required={field.is_required}
                       className={field.class_name}
+                      value={value || []}
+                      onChange={onInputChange}
                     />
                   );
                 }
-                // Add other field types here as needed (e.g., textarea, checkbox)
 
                 return null;
               })}

@@ -12,11 +12,9 @@ export async function loader({ params }: LoaderFunctionArgs) {
   }
   console.log("PARAMS", params);
   try {
-    // ONE API call is enough now, thanks to your backend update
     const res = await axios.get<ApiCollectionResponse<FormData>>(
       `/api/forms?slug=${params.slug}`
     );
-    // The API returns an array, so we take the first (and only) item
     const form = res.data.data[0];
 
     if (!form) {
@@ -24,11 +22,10 @@ export async function loader({ params }: LoaderFunctionArgs) {
     }
     console.log(form);
 
-    // No transformation needed! Just return the clean form data.
     return { form };
 
   } catch (error: any) {
-    // console.error(error);
+    console.error(error);
     throw new Response("Form Not Found", { status: 404 });
   }
 }

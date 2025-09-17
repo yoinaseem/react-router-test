@@ -1,7 +1,6 @@
 import type { Route } from "./+types/home";
 import { HomePage } from "~/components/pages/HomePage";
 import axios from "~/lib/axios";
-// import { json } from "react-router";
 
 export function meta({}: Route.MetaArgs) {
   return [

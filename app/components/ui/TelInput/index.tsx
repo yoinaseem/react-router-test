@@ -1,3 +1,6 @@
+import type { ChangeEvent } from "react";
+import { getGridStyle } from "~/utils/grid";
+
 interface Props {
   id: string;
   name: string;
@@ -5,21 +8,38 @@ interface Props {
   placeholder: string;
   required: boolean;
   className?: string;
+  value: string;
+  onChange: (name: string, value: string) => void;
 }
 
-export function TelInput({ id, name, label, placeholder, required, className }: Props) {
+export function TelInput({
+  id,
+  name,
+  label,
+  placeholder,
+  required,
+  className,
+  value,
+  onChange,
+}: Props) {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    onChange(name, e.target.value);
+  };
+
   return (
-    <div className={`flex flex-col ${className || 'col-span-6'}`}>
+    <div className="flex flex-col" style={getGridStyle(className)}>
       <label htmlFor={id} className="mb-1">
         {label}
+        {required && <span className="text-red-500 ml-1">*</span>}
       </label>
       <input
         type="tel"
         id={id}
         name={name}
+        value={value}
+        onChange={handleChange}
         placeholder={placeholder}
         required={required}
-        // Optional: A pattern for basic phone number format validation
         pattern="[0-9]{7,15}"
         title="Please enter a valid phone number (7 to 15 digits)"
         className="border border-custom-gray rounded-md p-2"

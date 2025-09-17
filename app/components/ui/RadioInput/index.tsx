@@ -1,3 +1,6 @@
+import type { ChangeEvent } from "react";
+import { getGridStyle } from "~/utils/grid";
+
 interface Option {
   value: string;
   label: string;
@@ -9,17 +12,32 @@ interface Props {
   options: Option[];
   required: boolean;
   className?: string;
+  value: string;
+  onChange: (name: string, value: string) => void;
 }
 
-export function RadioInput({ name, label, options, required, className }: Props) {
+export function RadioInput({ 
+  name, 
+  label, 
+  options, 
+  required, 
+  className,
+  value,
+  onChange
+}: Props) {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    onChange(name, e.target.value);
+  };
+
   return (
-    <div className={`flex flex-col ${className || 'col-span-6'}`}>
+    <div className="flex flex-col" style={getGridStyle(className)}>
       <fieldset>
-        {/* The 'legend' acts as the main label for the group */}
-        <legend className="mb-2">{label}</legend>
+        <legend className="mb-1">
+          {label}
+          {required && <span className="text-red-500 ml-1">*</span>}
+        </legend>
 
         <div className="flex flex-wrap gap-x-6 gap-y-2">
-          {/* Map over the options to create each radio button */}
           {options.map((option) => {
             const fieldId = `${name}-${option.value}`;
 
@@ -28,9 +46,10 @@ export function RadioInput({ name, label, options, required, className }: Props)
                 <input
                   type="radio"
                   id={fieldId}
-                  // The 'name' must be the same for all options in a group
                   name={name}
                   value={option.value}
+                  checked={value === option.value}
+                  onChange={handleChange}
                   required={required}
                   className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500"
                 />
