@@ -10,6 +10,8 @@
   --color-custom-blue: #0E6AAD;
   --color-custom-navy: #003962;
   --color-custom-green: #23B520;
+  --color-custom-green: #23B520;
+  --color-custom-green-light: #2ccc29;;
 
 }
 
@@ -17,6 +19,7 @@ html,
 body {
   /* @apply bg-white; */
   font-family: var(--font-sans);
+  /* background-color: #2ccc29; */
   /* @media (prefers-color-scheme: dark) {
     color-scheme: dark;
   } */
