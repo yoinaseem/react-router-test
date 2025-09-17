@@ -38,7 +38,10 @@ export function Header() {
     <header className="flex px-12 py-4 items-center shadow-sm/4 bg-white">
       {/* Logo and Name */}
       <div>
-        <Link to="/" className="flex gap-4 font-sans font-semibold text-2xl items-center">
+        <Link
+          to="/"
+          className="flex gap-4 font-sans font-semibold text-2xl items-center"
+        >
           <img src={mvEmblem} alt="Maldives Emblem" className="w-10" />
           Ministry of Youth and Sports
         </Link>
@@ -50,7 +53,7 @@ export function Header() {
           <Link to="/" className="text-custom-gray text-2xl">
             Home
           </Link>
-          
+
           {renderAuthSection()}
         </div>
       </div>

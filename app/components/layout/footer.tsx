@@ -1,3 +1,4 @@
+// app/components/layout/footer.tsx
 import { ArrowCounterClockwiseIcon } from "@phosphor-icons/react";
 
 interface SectionProgress {
@@ -11,9 +12,14 @@ interface SectionProgress {
 interface FooterProps {
   onSubmit: () => void;
   sectionProgress: SectionProgress[];
+  onClearForm: () => void;
 }
 
-export function Footer({ onSubmit, sectionProgress }: FooterProps) {
+export function Footer({
+  onSubmit,
+  sectionProgress,
+  onClearForm,
+}: FooterProps) {
   return (
     <footer className="bg-custom-navy h-25 flex items-center justify-between fixed bottom-0 w-full px-12">
       <div className="flex items-center w-1/2 gap-4">
@@ -21,10 +27,12 @@ export function Footer({ onSubmit, sectionProgress }: FooterProps) {
           <div key={section.sectionId} className="flex flex-col w-1/4">
             <div className="flex justify-between text-xs text-white mb-1">
               <span>{section.sectionTitle}</span>
-              <span>{section.filledFields}/{section.totalFields}</span>
+              <span>
+                {section.filledFields}/{section.totalFields}
+              </span>
             </div>
             <div className="w-full h-2 bg-gray-700 rounded-full overflow-hidden">
-              <div 
+              <div
                 className="h-full bg-custom-green transition-all duration-300"
                 style={{ width: `${section.progress}%` }}
               ></div>
@@ -33,13 +41,18 @@ export function Footer({ onSubmit, sectionProgress }: FooterProps) {
         ))}
       </div>
       <div className="flex items-center gap-4">
-        <div className="rounded-lg py-3 px-3 border border-white text-white flex items-center justify-center">
+        <button
+          type="button"
+          onClick={onClearForm}
+          className="rounded-lg py-3 px-3 border border-white text-white flex items-center justify-center hover:bg-white/10 transition-colors"
+          title="Clear Form"
+        >
           <ArrowCounterClockwiseIcon size={32} />
-        </div>
-        <button 
+        </button>
+        <button
           type="button"
           onClick={onSubmit}
-          className="rounded-lg py-3 px-12 text-2xl bg-custom-green text-white flex items-center justify-center"
+          className="rounded-lg py-3 px-12 text-2xl bg-custom-green text-white flex items-center justify-center hover:bg-custom-green/90 transition-colors"
         >
           Submit
         </button>
