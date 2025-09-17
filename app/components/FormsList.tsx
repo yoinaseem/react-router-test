@@ -1,7 +1,21 @@
 import { Link } from "react-router";
 import { FileText } from "@phosphor-icons/react";
 
-export function FormsList() {
+type Form = {
+  id: number;
+  name: string;
+  slug: string;
+};
+
+type FormsListProps = {
+  forms: Form[];
+};
+
+export function FormsList({ forms }: FormsListProps) {
+  if (!forms || forms.length === 0) {
+    return <p className="text-gray-500">No forms available.</p>;
+  }
+
   return (
     <div className="flex flex-col gap-2">
       <h2 className="text-2xl">Forms</h2>
@@ -19,14 +33,3 @@ export function FormsList() {
     </div>
   );
 }
-
-const forms = [
-  {
-    name: "Club Registration Form",
-    slug: "club-register",
-  },
-  {
-    name: "Tournament Registration Form",
-    slug: "tournament-register",
-  },
-];

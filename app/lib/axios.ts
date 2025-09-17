@@ -1,15 +1,3 @@
-// import Axios from 'axios';
-
-// const axios = Axios.create({
-//     baseURL: import.meta.env.VITE_API_URL,
-//     // headers: {
-//     //     'X-Requested-With': 'XMLHttpRequest',
-//     // },
-//     withCredentials: true,
-// });
-
-// export default axios;
-
 import Axios from "axios";
 
 // Helper function to get a cookie by name
@@ -34,17 +22,17 @@ const axios = Axios.create({
 // It runs before every request.
 axios.interceptors.request.use(
   (config) => {
-    // We get the token from the cookie
-    const token = getCookie("XSRF-TOKEN");
-    let decoded = null;
-    
-    if (token !== null) {
-        decoded = decodeURIComponent(token);
+    if (typeof document !== 'undefined') {
+      const token = getCookie("XSRF-TOKEN");
+      let decoded = null;
+      if (token !== null) {
+          decoded = decodeURIComponent(token);
+          if (decoded) {
+            config.headers["X-XSRF-TOKEN"] = decoded;
+          }
+      }
     }
-    // If the token exists, we add it to the request headers
-    if (decoded) {
-      config.headers["X-XSRF-TOKEN"] = decoded;
-    }
+
     // console.log(config.headers["X-XSRF-TOKEN"], decoded);
 
     return config;

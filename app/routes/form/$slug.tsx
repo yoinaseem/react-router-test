@@ -2,184 +2,49 @@ import { FormPage } from "~/components/pages/FormPage";
 import type { Route } from "./+types/home";
 import type { LoaderFunctionArgs } from "react-router";
 import { useLoaderData } from "react-router";
-
-const getFormData = (slug: string | undefined) => {
-  if (slug === "club-register") {
-    return {
-      title: "Club Registration Form",
-      fields: [
-        {
-          name: "Name",
-          placeholder: "Full-name",
-          type: "text-input",
-          default: undefined,
-          required: true,
-          section: "General Information",
-          className: 'col-span-6',
-        },
-        {
-          name: "Club Name",
-          placeholder: "Club Name",
-          type: "text-input",
-          default: undefined,
-          required: true,
-          section: "General Information",
-          className: 'col-span-6',
-        },
-        {
-          name: "Position in Club",
-          placeholder: "Select Position",
-          type: "select-input",
-          default: undefined,
-          required: true,
-          section: "General Information",
-          className: 'col-span-6',
-        },
-        {
-          name: "Sport",
-          placeholder: "Select Sport",
-          type: "select-input",
-          default: undefined,
-          required: true,
-          section: "General Information",
-          className: 'col-span-6',
-        },
-        {
-          name: "Street Address",
-          placeholder: "House/Apartment, Road",
-          type: "text-input",
-          default: undefined,
-          required: true,
-          section: "General Information",
-          className: 'col-span-6',
-        },
-        {
-          name: "Island City",
-          placeholder: "Select Island/City",
-          type: "select-input",
-          default: undefined,
-          required: true,
-          section: "General Information",
-          className: 'col-span-6',
-        },
-        {
-          name: "Contact Number",
-          placeholder: "Contact Number",
-          type: "text-input",
-          default: undefined,
-          required: true,
-          section: "General Information",
-          className: 'col-span-2',
-        },
-        {
-          name: "Email",
-          placeholder: "Email",
-          type: "text-input",
-          default: undefined,
-          required: true,
-          section: "General Information",
-          className: 'col-span-4',
-        },
-        {
-          name: "Website",
-          placeholder: "Club Website",
-          type: "text-input",
-          default: undefined,
-          required: true,
-          section: "General Information",
-          className: 'col-span-6',
-        },
-      ],
-    };
-  }
-  if (slug === "tournament-register") {
-    return {
-      title: "Tournament Registration Form",
-      fields: [
-        {
-          name: "Name",
-          placeholder: "Full-name",
-          type: "text-input",
-          default: undefined,
-          required: true,
-          section: "General Information",
-        },
-        {
-          name: "Club Name",
-          placeholder: "Club Name",
-          type: "text-input",
-          default: undefined,
-          required: true,
-          section: "General Information",
-        },
-        {
-          name: "Position in Club",
-          placeholder: "Select Position",
-          type: "select-input",
-          default: undefined,
-          required: true,
-          section: "General Information",
-        },
-        {
-          name: "Sport",
-          placeholder: "Select Sport",
-          type: "select-input",
-          default: undefined,
-          required: true,
-          section: "General Information",
-        },
-        {
-          name: "Street Address",
-          placeholder: "House/Apartment, Road",
-          type: "text-input",
-          default: undefined,
-          required: true,
-          section: "General Information",
-        },
-        {
-          name: "Tournament Title",
-          placeholder: "Tournament Title",
-          type: "text-input",
-          default: undefined,
-          required: true,
-          section: "Tournament Information",
-        },
-        {
-          name: "Sport",
-          placeholder: "Select Sport",
-          type: "select-input",
-          default: undefined,
-          required: true,
-          section: "Tournament Information",
-        },
-      ],
-    };  
-  } else {
-    return undefined;
-  }
-};
+import axios from "~/lib/axios";
+import type { FormData, ApiCollectionResponse } from "~/types";
 
 // The loader function runs on the server
 export async function loader({ params }: LoaderFunctionArgs) {
-  const formData = getFormData(params.slug);
-  if (!formData) {
+  if (!params.slug) {
     throw new Response("Not Found", { status: 404 });
   }
-  return { formData };
+  console.log("PARAMS", params);
+  try {
+    // ONE API call is enough now, thanks to your backend update
+    const res = await axios.get<ApiCollectionResponse<FormData>>(
+      `/api/forms?slug=${params.slug}`
+    );
+    // The API returns an array, so we take the first (and only) item
+    const form = res.data.data[0];
+
+    if (!form) {
+      throw new Response("Form Not Found", { status: 404 });
+    }
+    console.log(form);
+
+    // No transformation needed! Just return the clean form data.
+    return { form };
+
+  } catch (error: any) {
+    // console.error(error);
+    throw new Response("Form Not Found", { status: 404 });
+  }
 }
 
-export function meta({}: Route.MetaArgs) {
+export function meta({ data }: Route.MetaArgs) {
+  const formName = data?.form?.name || "Registration Form";
+  const formDes = data?.form?.description || "Register";
   return [
-    { title: "Registration Form" },
-    {
-      name: "description",
-      content: "Ministry of Youth and Sports, Maldives.!",
-    },
+    { title: formName },
+    { name: formDes},
+    { content: "Ministry of Youth and Sports, Maldives."},
   ];
 }
 
 export default function DynamicFormRoute() {
-  const { formData } = useLoaderData() as any;
+  const { form } = useLoaderData() as { form: FormData };
 
-  return <FormPage formData={formData} />;
+  return <FormPage form={form} />;
 }

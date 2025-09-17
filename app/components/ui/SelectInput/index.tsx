@@ -29,10 +29,10 @@ export function SelectInput({ id, name, label, placeholder, required, options, c
         <option value="" disabled>
           {placeholder}
         </option>
-        {/* Map over the passed-in options array */}
+        
         {options.map((option) => (
           <option key={option.value} value={option.value}>
-            {option.label}
+            {option.value}
           </option>
         ))}
       </select>
