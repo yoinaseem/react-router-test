@@ -1,9 +1,9 @@
 import { useState, useMemo } from "react";
-import { Footer } from "~/components/layout/Footer";
+import { Footer } from "../layout/footer";
 import { FormRenderer } from "~/components/FormRenderer";
 import { ConfirmationDialog } from "~/components/ui/ConfirmationDialog";
 import type { FormData } from "~/types";
-
+import { evaluateFieldVisibility } from "~/utils/formDependencies";
 interface FormPageProps {
   form: FormData;
 }
@@ -18,15 +18,38 @@ export function FormPage({ form }: FormPageProps) {
   // Handle form submission
   const handleSubmit = () => {
     console.log("Form submitted with data:", formState);
-    // Later you can implement POST request here
+    // implement POST request
   };
 
-  // Handle input changes
   const handleInputChange = (name: string, value: any) => {
-    setFormState((prev) => ({
-      ...prev,
+    // Create a new form state with the updated value
+    const newFormState = {
+      ...formState,
       [name]: value,
-    }));
+    };
+
+    // Check all fields to see if they should be hidden and clear their values if needed
+    const updatedFormState = { ...newFormState };
+    form.sections.forEach((section) => {
+      section.fields.forEach((field) => {
+        // Skip the field that just changed
+        if (field.name === name) return;
+
+        // Check if this field should be visible based on the new form state
+        const shouldBeVisible = evaluateFieldVisibility(
+          field,
+          form.sections,
+          newFormState
+        );
+
+        // If the field should not be visible and has a value, clear it
+        if (!shouldBeVisible && updatedFormState[field.name] !== undefined) {
+          delete updatedFormState[field.name];
+        }
+      });
+    });
+
+    setFormState(updatedFormState);
   };
 
   // Request to clear the form
@@ -48,15 +71,15 @@ export function FormPage({ form }: FormPageProps) {
   // Calculate progress for each section
   const sectionProgress = useMemo(() => {
     return form.sections.map((section) => {
-      // Get all required fields in this section
-      const requiredFields = section.fields.filter(
-        (field) => field.is_required
+      const visibleFields = section.fields.filter((field) =>
+        evaluateFieldVisibility(field, form.sections, formState)
       );
+      // Get all required fields in this section
+      const requiredFields = visibleFields.filter((field) => field.is_required);
 
       // Count how many required fields are filled
       const filledFields = requiredFields.filter((field) => {
         const value = formState[field.name];
-        // Check if the value is not empty (for strings, arrays, etc.)
         if (value === null || value === undefined) return false;
         if (typeof value === "string") return value.trim() !== "";
         if (Array.isArray(value)) return value.length > 0;
