@@ -14,6 +14,8 @@ export function FormPage({ form }: FormPageProps) {
   const [formState, setFormState] = useState<Record<string, any>>({});
   const [showClearConfirmation, setShowClearConfirmation] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
 
   const findFieldByName = (name: string) => {
     for (const section of form.sections) {
@@ -23,9 +25,88 @@ export function FormPage({ form }: FormPageProps) {
     return null;
   };
 
+  // Validate all visible fields
+  const validateForm = () => {
+    const newErrors: Record<string, string> = {};
+
+    form.sections.forEach((section) => {
+      section.fields.forEach((field) => {
+        // Check if field is visible
+        const isVisible = evaluateFieldVisibility(
+          field,
+          form.sections,
+          formState
+        );
+        if (!isVisible) return;
+
+        // Validate the field
+        const error = validateField(field, formState[field.name]);
+        if (error) {
+          newErrors[field.name] = error;
+        }
+      });
+    });
+
+    return newErrors;
+  };
+
+ // Handle form submission
   const handleSubmit = () => {
-    console.log("Form submitted with data:", formState);
-    // implement POST request
+    // Validate all visible fields
+    const validationErrors = validateForm();
+    
+    // If there are validation errors, update the error state and return
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      
+      // Scroll to the first error
+      const firstErrorField = document.querySelector(`[name="${Object.keys(validationErrors)[0]}"]`);
+      if (firstErrorField) {
+        firstErrorField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      
+      return;
+    }
+    
+    // If no errors, prepare data for submission
+    setIsSubmitting(true);
+    
+    // Prepare submission data - only include visible fields
+    const submissionData: Record<string, any> = {};
+    
+    form.sections.forEach(section => {
+      section.fields.forEach(field => {
+        const isVisible = evaluateFieldVisibility(field, form.sections, formState);
+        if (isVisible && formState[field.name] !== undefined) {
+          submissionData[field.name] = formState[field.name];
+        }
+      });
+    });
+    
+    // Log the submission data (replace with actual POST request later)
+    console.log("Form submission data:", submissionData);
+    console.log("Form submission format:", {
+      formId: form.id,
+      data: submissionData
+    });
+    
+    // Reset submitting state
+    setIsSubmitting(false);
+    
+    // Here you would later implement the actual POST request:
+    // try {
+    //   const response = await axios.post('/api/submissions', {
+    //     formId: form.id,
+    //     data: submissionData
+    //   });
+    //   console.log("Submission successful:", response.data);
+    //   // Handle success (redirect, show success message, etc.)
+    // } catch (error) {
+    //   console.error("Submission failed:", error);
+    //   // Handle error
+    // } finally {
+    //   setIsSubmitting(false);
+    // }
   };
 
   const handleInputChange = (name: string, value: any) => {
@@ -154,6 +235,7 @@ export function FormPage({ form }: FormPageProps) {
         onSubmit={handleSubmit}
         sectionProgress={sectionProgress}
         onClearForm={requestClearForm}
+        isSubmitting={isSubmitting}
       />
 
       <ConfirmationDialog

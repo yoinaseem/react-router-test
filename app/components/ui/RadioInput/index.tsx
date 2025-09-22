@@ -56,12 +56,12 @@ export function RadioInput({
                   className="h-4 w-4 border-gray-300"
                 />
                 <label htmlFor={fieldId}>{option.label}</label>
-                {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
               </div>
             );
           })}
         </div>
       </fieldset>
+      {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
     </div>
   );
 }

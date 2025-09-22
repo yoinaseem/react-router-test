@@ -1,5 +1,6 @@
 import { ArrowCounterClockwiseIcon } from "@phosphor-icons/react";
 import { ProgressBar } from "./ProgressBar";
+
 interface SectionProgress {
   sectionId: number;
   sectionTitle: string;
@@ -12,9 +13,10 @@ interface FooterProps {
   onSubmit: () => void;
   sectionProgress: SectionProgress[];
   onClearForm: () => void;
+  isSubmitting?: boolean;
 }
 
-export function Footer({ onSubmit, sectionProgress, onClearForm }: FooterProps) {
+export function Footer({ onSubmit, sectionProgress, onClearForm, isSubmitting }: FooterProps) {
   return (
     <footer className="bg-custom-navy h-25 flex items-center justify-between fixed bottom-0 w-full px-12">
       <ProgressBar sectionProgress={sectionProgress} />
@@ -24,15 +26,21 @@ export function Footer({ onSubmit, sectionProgress, onClearForm }: FooterProps) 
           onClick={onClearForm}
           className="rounded-lg py-3 px-3 border border-white text-white flex items-center justify-center hover:bg-white hover:bg-opacity-10 transition-colors"
           title="Clear Form"
+          disabled={isSubmitting}
         >
           <ArrowCounterClockwiseIcon size={32} />
         </button>
         <button 
           type="button"
           onClick={onSubmit}
-          className="rounded-lg py-3 px-12 text-2xl bg-custom-green text-white flex items-center justify-center hover:bg-opacity-90 transition-colors"
+          disabled={isSubmitting}
+          className={`rounded-lg py-3 px-12 text-2xl text-white flex items-center justify-center transition-colors ${
+            isSubmitting 
+              ? 'bg-gray-400 cursor-not-allowed' 
+              : 'bg-custom-green hover:bg-opacity-90'
+          }`}
         >
-          Submit
+          {isSubmitting ? 'Submitting...' : 'Submit'}
         </button>
       </div>
     </footer>
