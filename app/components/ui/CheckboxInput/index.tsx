@@ -14,6 +14,7 @@ interface Props {
   value: string[];
   onChange: (name: string, value: string[]) => void;
   required?: boolean;
+  error?: string;
 }
 
 export function CheckboxInput({ 
@@ -23,7 +24,8 @@ export function CheckboxInput({
   className,
   value,
   onChange,
-  required = false
+  required = false,
+  error,
 }: Props) {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const optionValue = e.target.value;
@@ -41,7 +43,7 @@ export function CheckboxInput({
 
   return (
     <div className="flex flex-col" style={getGridStyle(className)}>
-      <fieldset>
+      <fieldset className='p-2 rounded'>
         <legend className="mb-1">
           {label}
           {required && <span className="text-red-500 ml-1">*</span>}
@@ -60,7 +62,11 @@ export function CheckboxInput({
                   value={option.value}
                   checked={value.includes(option.value)}
                   onChange={handleChange}
-                  className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                  className={`h-4 w-4 rounded ${
+                    error 
+                      ? 'focus:ring-red-500' 
+                      : 'border-gray-300'
+                  }`}
                 />
                 <label htmlFor={fieldId}>
                   {option.label}
@@ -70,6 +76,9 @@ export function CheckboxInput({
           })}
         </div>
       </fieldset>
+      {error && (
+        <p className="mt-1 text-sm text-red-500">{error}</p>
+      )}
     </div>
   );
 }

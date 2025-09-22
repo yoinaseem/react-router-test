@@ -4,18 +4,25 @@ import { FormRenderer } from "~/components/FormRenderer";
 import { ConfirmationDialog } from "~/components/ui/ConfirmationDialog";
 import type { FormData } from "~/types";
 import { evaluateFieldVisibility } from "~/utils/formDependencies";
+import { validateField } from "~/utils/fieldValidation";
+
 interface FormPageProps {
   form: FormData;
 }
 
 export function FormPage({ form }: FormPageProps) {
-  // Initialize form state
   const [formState, setFormState] = useState<Record<string, any>>({});
-
-  // State for confirmation dialog
   const [showClearConfirmation, setShowClearConfirmation] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
-  // Handle form submission
+  const findFieldByName = (name: string) => {
+    for (const section of form.sections) {
+      const field = section.fields.find((f) => f.name === name);
+      if (field) return field;
+    }
+    return null;
+  };
+
   const handleSubmit = () => {
     console.log("Form submitted with data:", formState);
     // implement POST request
@@ -49,7 +56,30 @@ export function FormPage({ form }: FormPageProps) {
       });
     });
 
+    // Validate the current field
+    const field = findFieldByName(name);
+    let newErrors = { ...errors };
+
+    if (field) {
+      const error = validateField(field, value);
+      if (error) {
+        newErrors[name] = error;
+      } else {
+        delete newErrors[name];
+      }
+    }
+
+    // Clear errors for hidden fields
+    form.sections.forEach((section) => {
+      section.fields.forEach((field) => {
+        if (!evaluateFieldVisibility(field, form.sections, updatedFormState)) {
+          delete newErrors[field.name];
+        }
+      });
+    });
+
     setFormState(updatedFormState);
+    setErrors(newErrors);
   };
 
   // Request to clear the form
@@ -60,6 +90,7 @@ export function FormPage({ form }: FormPageProps) {
   // Actually clear the form
   const handleClearForm = () => {
     setFormState({});
+    setErrors({});
     setShowClearConfirmation(false);
   };
 
@@ -115,6 +146,7 @@ export function FormPage({ form }: FormPageProps) {
             sections={form.sections}
             onInputChange={handleInputChange}
             formState={formState}
+            errors={errors}
           />
         </div>
       </section>

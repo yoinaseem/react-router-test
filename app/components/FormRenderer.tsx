@@ -17,12 +17,14 @@ interface FormRendererProps {
   sections: FormSection[];
   onInputChange: (name: string, value: any) => void;
   formState: Record<string, any>;
+  errors: Record<string, string>;
 }
 
 export function FormRenderer({
   sections,
   onInputChange,
   formState,
+  errors,
 }: FormRendererProps) {
   console.log(formState);
   const renderField = (field: FormField) => {
@@ -32,6 +34,8 @@ export function FormRenderer({
 
     const fieldId = toKebabCase(field.name);
     const value = formState[field.name] || "";
+    console.log(errors);
+    const error = errors[field.name];
 
     switch (field.type) {
       case "text":
@@ -46,6 +50,7 @@ export function FormRenderer({
             className={field.class_name}
             value={value}
             onChange={onInputChange}
+            error={error}
           />
         );
 
@@ -61,6 +66,7 @@ export function FormRenderer({
             className={field.class_name}
             value={value}
             onChange={onInputChange}
+            error={error}
           />
         );
 
@@ -76,6 +82,7 @@ export function FormRenderer({
             className={field.class_name}
             value={value}
             onChange={onInputChange}
+            error={error}
           />
         );
 
@@ -91,6 +98,7 @@ export function FormRenderer({
             className={field.class_name}
             value={value}
             onChange={onInputChange}
+            error={error}
           />
         );
 
@@ -106,6 +114,7 @@ export function FormRenderer({
             className={field.class_name}
             value={value}
             onChange={onInputChange}
+            error={error}
           />
         );
 
@@ -121,6 +130,7 @@ export function FormRenderer({
             className={field.class_name}
             value={value}
             onChange={onInputChange}
+            error={error}
           />
         );
 
@@ -141,6 +151,7 @@ export function FormRenderer({
             className={field.class_name}
             value={value}
             onChange={onInputChange}
+            error={error}
           />
         );
 
@@ -159,6 +170,7 @@ export function FormRenderer({
             className={field.class_name}
             value={value}
             onChange={onInputChange}
+            error={error}
           />
         );
 
@@ -177,6 +189,7 @@ export function FormRenderer({
             className={field.class_name}
             value={value || []}
             onChange={onInputChange}
+            error={error}
           />
         );
 

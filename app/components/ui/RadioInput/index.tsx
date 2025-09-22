@@ -14,16 +14,18 @@ interface Props {
   className?: string;
   value: string;
   onChange: (name: string, value: string) => void;
+  error?: string;
 }
 
-export function RadioInput({ 
-  name, 
-  label, 
-  options, 
-  required, 
+export function RadioInput({
+  name,
+  label,
+  options,
+  required,
   className,
   value,
-  onChange
+  onChange,
+  error,
 }: Props) {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     onChange(name, e.target.value);
@@ -51,11 +53,10 @@ export function RadioInput({
                   checked={value === option.value}
                   onChange={handleChange}
                   required={required}
-                  className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                  className="h-4 w-4 border-gray-300"
                 />
-                <label htmlFor={fieldId}>
-                  {option.label}
-                </label>
+                <label htmlFor={fieldId}>{option.label}</label>
+                {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
               </div>
             );
           })}

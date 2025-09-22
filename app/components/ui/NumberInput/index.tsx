@@ -13,6 +13,7 @@ interface Props {
   step?: number;
   value: string | number;
   onChange: (name: string, value: number) => void;
+  error?: string;
 }
 
 export function NumberInput({
@@ -27,6 +28,7 @@ export function NumberInput({
   step,
   value,
   onChange,
+  error,
 }: Props) {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const numValue = e.target.value ? Number(e.target.value) : "";
@@ -50,8 +52,15 @@ export function NumberInput({
         min={min}
         max={max}
         step={step}
-        className="border border-custom-gray rounded-md p-2"
+        className={`border rounded-md p-2 ${
+          error 
+            ? 'border-red-500' 
+            : 'border-custom-gray'
+        }`}
       />
+      {error && (
+        <p className="mt-1 text-sm text-red-500">{error}</p>
+      )}
     </div>
   );
 }

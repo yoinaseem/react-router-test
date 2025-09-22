@@ -11,6 +11,7 @@ interface Props {
   rows?: number;
   value: string;
   onChange: (name: string, value: string) => void;
+  error?: string;
 }
 
 export function TextareaInput({
@@ -23,6 +24,7 @@ export function TextareaInput({
   rows = 4,
   value,
   onChange,
+  error,
 }: Props) {
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     onChange(name, e.target.value);
@@ -42,8 +44,15 @@ export function TextareaInput({
         placeholder={placeholder}
         required={required}
         rows={rows}
-        className="border border-custom-gray rounded-md p-2"
+        className={`border rounded-md p-2 ${
+          error 
+            ? 'border-red-500' 
+            : 'border-custom-gray'
+        }`}
       />
+      {error && (
+        <p className="mt-1 text-sm text-red-500">{error}</p>
+      )}
     </div>
   );
 }

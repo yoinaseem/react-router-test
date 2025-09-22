@@ -10,6 +10,7 @@ interface Props {
   className?: string;
   value: string;
   onChange: (name: string, value: string) => void;
+  error?: string;
 }
 
 export function TelInput({
@@ -21,6 +22,7 @@ export function TelInput({
   className,
   value,
   onChange,
+  error,
 }: Props) {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     onChange(name, e.target.value);
@@ -42,8 +44,15 @@ export function TelInput({
         required={required}
         pattern="[0-9]{7,15}"
         title="Please enter a valid phone number (7 to 15 digits)"
-        className="border border-custom-gray rounded-md p-2"
+        className={`border rounded-md p-2 ${
+          error 
+            ? 'border-red-500' 
+            : 'border-custom-gray'
+        }`}
       />
+      {error && (
+        <p className="mt-1 text-sm text-red-500">{error}</p>
+      )}
     </div>
   );
 }

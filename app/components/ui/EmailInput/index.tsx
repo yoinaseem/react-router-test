@@ -10,6 +10,7 @@ interface Props {
   className?: string;
   value: string;
   onChange: (name: string, value: string) => void;
+  error?: string;
 }
 
 export function EmailInput({
@@ -21,6 +22,7 @@ export function EmailInput({
   className,
   value,
   onChange,
+  error,
 }: Props) {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     onChange(name, e.target.value);
@@ -40,8 +42,15 @@ export function EmailInput({
         onChange={handleChange}
         placeholder={placeholder}
         required={required}
-        className="border border-custom-gray rounded-md p-2"
+        className={`border rounded-md p-2 ${
+          error 
+            ? 'border-red-500' 
+            : 'border-custom-gray'
+        }`}
       />
+      {error && (
+        <p className="mt-1 text-sm text-red-500">{error}</p>
+      )}
     </div>
   );
 }

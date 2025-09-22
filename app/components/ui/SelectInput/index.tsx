@@ -16,18 +16,20 @@ interface Props {
   className?: string;
   value: string;
   onChange: (name: string, value: string) => void;
+  error?: string;
 }
 
-export function SelectInput({ 
-  id, 
-  name, 
-  label, 
-  placeholder, 
-  required, 
-  options, 
+export function SelectInput({
+  id,
+  name,
+  label,
+  placeholder,
+  required,
+  options,
   className,
   value,
-  onChange
+  onChange,
+  error,
 }: Props) {
   const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
     onChange(name, e.target.value);
@@ -45,18 +47,21 @@ export function SelectInput({
         value={value}
         onChange={handleChange}
         required={required}
-        className="border border-custom-gray rounded-md p-2"
+        className={`border rounded-md p-2 ${
+          error ? "border-red-500" : "border-custom-gray"
+        }`}
       >
         <option value="" disabled>
           {placeholder}
         </option>
-        
+
         {options.map((option) => (
           <option key={option.value} value={option.value}>
             {option.value}
           </option>
         ))}
       </select>
+      {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
     </div>
   );
 }
